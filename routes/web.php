@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Promise;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/promises', function (Promise $promise) {
+    return view('promise', [
+        'promise' => $promise
+    ]);
+});
+
+Route::get('/promises/{promise}', function (Promise $promise) {
+    return view('promise', [
+        'promise' => $promise
+    ]);
 });
