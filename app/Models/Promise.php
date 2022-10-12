@@ -9,7 +9,14 @@ class Promise extends Model
 {
     use HasFactory;
 
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $protected = [
+        'id'
+    ];
 
 
 }

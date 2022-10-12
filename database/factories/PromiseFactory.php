@@ -20,7 +20,7 @@ class PromiseFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'public' => fake(),
+            'public' => fake()->boolean(),
             'user_id' => User::factory()
         ];
     }

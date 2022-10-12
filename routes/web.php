@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\Promise;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,17 +17,53 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
-Route::get('/promises', function (Promise $promise) {
-    return view('promise', [
-        'promise' => $promise
+Route::get('/register', function () {
+    return view('register');
+});
+
+Route::post('/register', function () {
+
+    $data = request()->validate([
+        'name' => 'required',
+        'lastname' => 'required',
+        'email' => 'required',
+        'username' => 'required',
+        'password' => 'required'
+    ]);
+
+    //dd($data);
+
+    User::create($data);
+});
+
+
+
+
+
+Route::get('/promises', function () {
+    return view('promises', [
+        'promises' => Promise::all()->sortByDesc('created_at')
     ]);
 });
 
-Route::get('/promises/{promise}', function (Promise $promise) {
-    return view('promise', [
-        'promise' => $promise
+
+
+
+Route::post('/login', function () {
+    $attributes = request()->validate([
+        'email' => 'required|email|max:255',
+        'password' => 'required|max:255'
     ]);
+
+    if(!auth()->attempt($attributes, request()->get('remember'))){
+        throw ValidationException::withMessages([
+            'email' => 'Credentials are incorrect',
+        ]);
+    }
+
+    session()->regenerate();
+    return redirect('/')->with('success', 'Logged in succesfully!');
 });
