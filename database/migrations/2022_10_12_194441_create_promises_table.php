@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->foreingId('user_id');
+            $table->foreignid('user_id');
             $table->timestamps();
+            $table->boolean('public');
+
         });
     }
 
